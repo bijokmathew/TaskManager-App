@@ -6,12 +6,13 @@ from taskmanager.models import Category, Task
 
 @app.route("/")
 def home():
-    return render_template("task.html")
+    return render_template("category.html")
 
 
 @app.route("/categories")
 def categories():
-    return render_template("category.html")
+    categories = list(Category.query.all())    
+    return render_template("category.html", categories=categories)
 
 
 @app.route("/add_category", methods=["GET", "POST"])
@@ -22,3 +23,8 @@ def add_category():
         db.session.commit()
         return redirect(url_for('categories'))
     return render_template("category_add.html")
+
+
+@app.route("/add_category", methods=["GET", "POST"])
+def edit_category():
+    return render_template("category_edit.html")
