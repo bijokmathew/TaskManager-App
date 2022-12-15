@@ -3,25 +3,40 @@
 <h3 class="light-blue-text text-darken-3 center-align"> Categories</h3>
 
 <div class="row">
-    <div class="col s12 center-align">
-        <a href="{{url_for('add_category')}}" class="btn-large light-blue darken-2">
-            Add Categories <i class="fas fa-plus-square right"></i>
-        </a>
-    </div>
+  <div class="col s12 center-align">
+    <a href="{{url_for('add_category')}}" class="btn-large light-blue darken-2">
+      Add Categories <i class="fas fa-plus-square right"></i>
+    </a>
+  </div>
 </div>
 <div class="row">
   {% for category in categories %}
-    <div class="col s12 m6 l3">
-      <div class="card light-blue darken-4 center-align">
-        <div class="card-content white-text">
-          <span class="card-title">{{category.category_name}}</span>
-        </div>
-        <div class="card-action">
-          <a href="#" class="btn green accent-4">Edit</a>
-          <a href="#" class="btn red">Delete</a>
-        </div>
+  <div class="col s12 m6 l3">
+    <div class="card light-blue darken-4 center-align">
+      <div class="card-content white-text">
+        <span class="card-title">{{category.category_name}}</span>
       </div>
+      {% if category.owner == session.uesr %}
+      <div class="card-action">
+        <a href="{{url_for('edit_category', category_id=category.id)}}" class="btn  green accent-4">Edit</a>
+        <a class="btn modal-trigger red" href="#modal{{category.id}}">Delete</a>
+      
+        <!-- Modal Structure -->
+        <div id="modal{{category.id}}" class="modal">
+          <div class="modal-content">
+            <h4>Are you sure want to delete this {{category.category_name}} ?</h4>
+            <p>This action cannot be undone</p>
+          </div>
+          <div class="modal-footer">
+            <a href="{{url_for('delete_category', category_id=category.id)}}" class="btn red">Delete</a>
+            <a href="#!" class="modal-close green accent-4 btn ">Cancel</a>
+          </div>
+        </div>
+
+      </div>
+      {% endif %}
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
+</div>
 {% endblock %}
